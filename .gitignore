@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+**/.env
+
+# Database files
+backend/data.json
+**/data.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug logs
+.cursor/
+debug.log
+*.debug.log
+
+# Package locks (可选，根据团队偏好)
+# package-lock.json
+# yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+
