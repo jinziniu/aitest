@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 import './UserManagement.css';
 
 interface User {
   id: string;
   username: string;
   email: string;
+  gender?: string;
+  birth_year?: number;
+  tags?: string[];
   persona_seed?: string;
   bio?: string;
   createdAt?: string;
 }
-
-const API_BASE = 'http://localhost:5000';
 
 function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
@@ -21,6 +23,9 @@ function UserManagement() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
+    gender: '',
+    birth_year: '',
+    tags: '',
     persona_seed: '',
     bio: ''
   });
@@ -45,7 +50,7 @@ function UserManagement() {
 
   const handleCreate = () => {
     setEditingUser(null);
-    setFormData({ username: '', email: '', persona_seed: '', bio: '' });
+    setFormData({ username: '', email: '', gender: '', birth_year: '', tags: '', persona_seed: '', bio: '' });
     setShowForm(true);
   };
 
@@ -54,6 +59,9 @@ function UserManagement() {
     setFormData({
       username: user.username,
       email: user.email,
+      gender: user.gender || '',
+      birth_year: user.birth_year?.toString() || '',
+      tags: user.tags?.join(', ') || '',
       persona_seed: user.persona_seed || '',
       bio: user.bio || ''
     });
@@ -101,7 +109,11 @@ function UserManagement() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          birth_year: formData.birth_year ? parseInt(formData.birth_year) : null,
+          tags: formData.tags ? formData.tags.split(',').map(t => t.trim()).filter(t => t) : []
+        }),
       });
 
       const data = await response.json();
@@ -165,6 +177,37 @@ function UserManagement() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
+                />
+              </div>
+              <div className="form-group">
+                <label>性别</label>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                >
+                  <option value="">未设置</option>
+                  <option value="male">男</option>
+                  <option value="female">女</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>出生年份</label>
+                <input
+                  type="number"
+                  value={formData.birth_year}
+                  onChange={(e) => setFormData({ ...formData, birth_year: e.target.value })}
+                  placeholder="例如: 1995"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                />
+              </div>
+              <div className="form-group">
+                <label>标签（用逗号分隔）</label>
+                <input
+                  type="text"
+                  value={formData.tags}
+                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                  placeholder="例如: tech, coding, open-source"
                 />
               </div>
               <div className="form-group">

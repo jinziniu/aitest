@@ -4,6 +4,7 @@ import SearchUsers from './pages/SearchUsers';
 import FriendsList from './pages/FriendsList';
 import Chat from './pages/Chat';
 import PrivateChat from './pages/PrivateChat';
+import Recommendations from './pages/Recommendations';
 import UserManagement from './pages/UserManagement';
 import UserSwitcher from './components/UserSwitcher';
 import './App.css';
@@ -17,6 +18,7 @@ function App() {
             <div className="nav-links">
               <Link to="/" className="nav-link">搜索用户</Link>
               <Link to="/friends" className="nav-link">好友列表</Link>
+              <Link to="/recommendations" className="nav-link">推荐列表</Link>
               <Link to="/users" className="nav-link">用户管理</Link>
               <Link to="/chat/system" className="nav-link">System AI</Link>
             </div>
@@ -26,10 +28,11 @@ function App() {
             <Routes>
               <Route path="/" element={<SearchUsers />} />
               <Route path="/friends" element={<FriendsList />} />
-            <Route path="/users" element={<UserManagement />} />
-            <Route path="/chat/system" element={<Chat />} />
-            <Route path="/chat/friend/:friendId" element={<Chat />} />
-            <Route path="/chat/private/:peerUserId" element={<PrivateChat />} />
+              <Route path="/recommendations" element={<Recommendations />} />
+              <Route path="/users" element={<UserManagement />} />
+              <Route path="/chat/system" element={<Chat />} />
+              <Route path="/chat/friend/:friendId" element={<Chat />} />
+              <Route path="/chat/private/:peerUserId" element={<PrivateChat />} />
             </Routes>
           </main>
         </div>

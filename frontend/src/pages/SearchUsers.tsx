@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { API_BASE } from '../config/api';
 import './SearchUsers.css';
 
 interface User {
@@ -7,8 +8,6 @@ interface User {
   username: string;
   email: string;
 }
-
-const API_BASE = 'http://localhost:5000';
 
 function SearchUsers() {
   const { currentUserId } = useUser();

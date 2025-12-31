@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
+import { API_BASE } from '../config/api';
 import './FriendsList.css';
 
 interface Friendship {
@@ -17,8 +18,6 @@ interface Friendship {
   createdAt: string;
   acceptedAt?: string;
 }
-
-const API_BASE = 'http://localhost:5000';
 
 function FriendsList() {
   const navigate = useNavigate();

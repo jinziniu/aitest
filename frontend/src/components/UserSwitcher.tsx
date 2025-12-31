@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { API_BASE } from '../config/api';
 import './UserSwitcher.css';
-
-const API_BASE = 'http://localhost:5000';
 
 interface User {
   id: string;

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import { getSocket } from '../services/socket';
+import { API_BASE } from '../config/api';
 import './PrivateChat.css';
 
 interface Message {
@@ -12,8 +13,6 @@ interface Message {
   clientMsgId?: string;
   createdAt: string;
 }
-
-const API_BASE = 'http://localhost:5000';
 
 function PrivateChat() {
   const { peerUserId } = useParams<{ peerUserId: string }>();

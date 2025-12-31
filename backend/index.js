@@ -23,6 +23,10 @@ import {
   generateSystemAIResponse,
   generateFriendAIResponse
 } from './ai.js';
+import {
+  getRecommendations,
+  handleRecommendationEvent
+} from './recommendations.js';
 
 const app = express();
 const httpServer = createServer(app);
@@ -34,7 +38,7 @@ const io = new Server(httpServer, {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // 启用 CORS
 app.use(cors());
@@ -92,7 +96,7 @@ app.post('/users', (req, res) => {
       return res.status(400).json({ error: 'Username and email are required' });
     }
     
-    const user = createUser({ username, email, persona_seed, bio });
+    const user = createUser({ username, email, gender, birth_year, tags, persona_seed, bio });
     res.status(201).json({ user, message: 'User created successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -102,8 +106,8 @@ app.post('/users', (req, res) => {
 // 更新用户
 app.put('/users/:id', (req, res) => {
   try {
-    const { username, email, persona_seed, bio } = req.body;
-    const user = updateUser(req.params.id, { username, email, persona_seed, bio });
+    const { username, email, gender, birth_year, tags, persona_seed, bio } = req.body;
+    const user = updateUser(req.params.id, { username, email, gender, birth_year, tags, persona_seed, bio });
     res.json({ user, message: 'User updated successfully' });
   } catch (error) {
     if (error.message === 'User not found') {
@@ -469,6 +473,52 @@ app.get('/messages/private', (req, res) => {
     
     const messages = getPrivateMessages(userId, peerUserId);
     res.json({ messages });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 获取推荐列表
+app.get('/recommendations', (req, res) => {
+  try {
+    const { userId, gender, age_min, age_max, limit, offset } = req.query;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required' });
+    }
+    
+    const filters = {
+      gender: gender || null,
+      age_min: age_min ? parseInt(age_min) : null,
+      age_max: age_max ? parseInt(age_max) : null,
+      limit: limit ? parseInt(limit) : 20,
+      offset: offset ? parseInt(offset) : 0
+    };
+    
+    const result = getRecommendations(userId, filters);
+    res.json(result);
+  } catch (error) {
+    console.error('Error in /recommendations:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 推荐事件（更新score）
+app.post('/recommendations/event', (req, res) => {
+  try {
+    const { userId, candidateId, eventType } = req.body;
+    
+    if (!userId || !candidateId || !eventType) {
+      return res.status(400).json({ error: 'userId, candidateId, and eventType are required' });
+    }
+    
+    const result = handleRecommendationEvent(userId, candidateId, eventType);
+    res.json({ 
+      success: true, 
+      score: result.score, 
+      reasons: result.reasons,
+      message: `Score updated to ${result.score}`
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

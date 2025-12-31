@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
+import { API_BASE } from '../config/api';
 import './Chat.css';
 
 interface Message {
@@ -9,8 +10,6 @@ interface Message {
   content: string;
   createdAt: string;
 }
-
-const API_BASE = 'http://localhost:5000';
 
 function Chat() {
   const { currentUserId } = useUser();

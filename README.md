@@ -188,12 +188,25 @@ npm run dev
    - 房间ID：deterministic（sort(userId1, userId2).join(":")）
    - 鉴权：Socket连接时携带token（userId）
 
+### 推荐列表功能
+
+系统提供基于相关性评分的推荐列表功能，帮助用户发现潜在好友。
+
+**功能特性：**
+- 智能推荐：基于年龄、性别、标签、Bio等多维度计算相关性分数
+- 筛选功能：支持按性别、年龄范围筛选
+- 动态评分：用户操作（Skip/View/Like/Chat）会影响推荐分数
+- 推荐理由：每个推荐至少显示2条清晰的推荐理由
+
+详细使用指南请查看 [RECOMMENDATIONS_GUIDE.md](./RECOMMENDATIONS_GUIDE.md)
+
 ### 测试文档
 
 - 好友功能测试：查看 [TEST_COMMANDS.md](./TEST_COMMANDS.md)
 - AI聊天测试：查看 [AI_CHAT_TEST.md](./AI_CHAT_TEST.md)
 - Prompt模板：查看 [PROMPT_TEMPLATES.md](./PROMPT_TEMPLATES.md)
 - 实时聊天测试：查看 [REALTIME_CHAT_GUIDE.md](./REALTIME_CHAT_GUIDE.md) 和 [FINAL_TESTING_STEPS.md](./FINAL_TESTING_STEPS.md)
+- 推荐列表测试：查看 [RECOMMENDATIONS_GUIDE.md](./RECOMMENDATIONS_GUIDE.md)
 
 ## 下一步
 
