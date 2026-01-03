@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: chat-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - FRONTEND_URL=http://localhost
+      - NODE_ENV=production
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    volumes:
+      # 持久化数据文件
+      - ./backend/data.json:/app/data.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        - VITE_API_BASE_URL=http://localhost:5001
+        - VITE_SOCKET_URL=http://localhost:5001
+    container_name: chat-frontend
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5001
+      - VITE_SOCKET_URL=http://localhost:5001
+    depends_on:
+      - backend
+    restart: unless-stopped
+

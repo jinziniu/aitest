@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# 构建产物
+dist/
+build/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 日志
+*.log
+npm-debug.log*
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 数据文件（生产环境应该使用数据库）
+backend/data.json
+
+# 文档
+*.md
+!README.md
+
+
+
